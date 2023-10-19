@@ -2,22 +2,28 @@ import React, { useState, useEffect } from 'react';
 
 function QuizPage() {
   const [questions, setQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   useEffect(() => {
     fetchQuestions();
   }, []);
 
-  const fetchQuestions = async () => {
-    try {
-      const response = await fetch('https://opentdb.com/api.php?amount=5&type=multiple');
-      if (response.ok) {
-        const data = await response.json();
+  const fetchQuestions = () => {
+    fetch('https://opentdb.com/api.php?amount=5&type=multiple')
+      .then((res) => res.json())
+      .then((data) => {
         setQuestions(data.results);
-      } else {
-        console.error('Failed to fetch questions');
-      }
-    } catch (error) {
-      console.error('An error occurred while fetching questions:', error);
+      })
+      .catch((error) => {
+        console.error('An error occurred while fetching questions:', error);
+      });
+  };
+
+  const moveToNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      console.log('End of the quiz');
     }
   };
 
@@ -25,11 +31,12 @@ function QuizPage() {
     <div className="QuizPage">
       <h1>Quiz Page</h1>
       <div>
-        {questions.map((question, index) => (
-          <div key={index}>
-            <p>{question.question}</p>
+        {questions.length > 0 && (
+          <div>
+            <p>{questions[currentQuestionIndex].question}</p>
           </div>
-        ))}
+        )}
+        <button onClick={moveToNextQuestion}>Next</button>
       </div>
     </div>
   );
