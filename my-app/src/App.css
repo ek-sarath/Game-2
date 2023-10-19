@@ -1,0 +1,23 @@
+.App {
+  text-align: center;
+}
+
+.HomePage {
+
+  align-items: center;
+}
+
+button {
+  background-color: #0074d9;
+  color: white;
+  font-size: 16px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* button:hover {
+  background-color: #7dbcf8;
+} */
