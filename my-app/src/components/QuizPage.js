@@ -4,7 +4,6 @@ function QuizPage() {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
-    // Fetch questions when the component mounts
     fetchQuestions();
   }, []);
 
@@ -29,7 +28,6 @@ function QuizPage() {
         {questions.map((question, index) => (
           <div key={index}>
             <p>{question.question}</p>
-            {/* Render answer choices and other components here */}
           </div>
         ))}
       </div>
