@@ -2,14 +2,9 @@
   text-align: center;
 }
 
-.HomePage {
-
-  align-items: center;
-}
-
 button {
-  background-color: #0074d9;
-  color: white;
+  background-color: rgb(221, 221, 209);
+  color: black;
   font-size: 16px;
   padding: 8px 18px;
   border: none;
@@ -18,6 +13,23 @@ button {
   transition: background-color 0.3s;
 }
 
-/* button:hover {
-  background-color: #7dbcf8;
-} */
+.multiple-choice-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.option-button.correct {
+  background-color: green;
+  color: white;
+}
+
+.option-button.wrong {
+  background-color: red;
+  color: white;
+}
+
+.next-button {
+  background-color: blue;
+  margin-top: 10px;
+}
