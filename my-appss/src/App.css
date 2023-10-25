@@ -24,10 +24,10 @@ button {
   color: white;
 }
 
-.option-button.wrong {
+/* .option-button.incorrect {
   background-color: red;
   color: white;
-}
+} */
 
 .next-button {
   background-color: blue;

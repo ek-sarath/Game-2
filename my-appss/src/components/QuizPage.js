@@ -10,6 +10,7 @@ function QuizPage() {
 
   useEffect(() => {
     fetchQuestions();
+    const setCorrectAnswers=0;
   }, []);
 
   const fetchQuestions = () => {
