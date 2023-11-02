@@ -14,13 +14,6 @@ function QuizPage() {
   const [shuffledAnswers, setShuffledAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
-  useEffect(() => {
-    if (quiz.length === 0) {
-      fetchData();
-      console.log("hi");
-    }
-  }, [quiz.length]);
-
   const fetchData = async () => {
     try {
       const response = await axios.get(baseURL);
@@ -32,21 +25,23 @@ function QuizPage() {
   };
 
   useEffect(() => {
+    if (quiz.length === 0) {
+      fetchData();
+      console.log("hi");
+    }
+  }, [quiz.length]);
+
+  useEffect(() => {
     if (presentQuestionIndex < totalQuestions) {
       const currentQuestion = quiz[presentQuestionIndex];
       const answers = [
         ...currentQuestion.incorrect_answers,
         currentQuestion.correct_answer,
       ];
-
-  const shuffleAndSetAnswers = (answers) => {
-    const shuffled = shuffle(answers);
-    setShuffledAnswers(shuffled);
-  };
-
-  shuffleAndSetAnswers(answers);
-  }
-}, [presentQuestionIndex, quiz, totalQuestions]);
+      const shuffled = shuffle(answers);
+      setShuffledAnswers(shuffled);
+    }
+  }, [presentQuestionIndex, quiz, totalQuestions]);
 
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -55,6 +50,16 @@ function QuizPage() {
     }
     return array;
   }
+
+  const handlePlayAgain = () => {
+    // Reset the quiz state or navigate to the starting point
+    // You might want to reset the state and fetch new questions
+    setCorrectAnswers(0);
+    setSelectAnswer(null);
+    setPresentQuestionIndex(0);
+    setShowResults(false);
+    fetchData(); // Fetch new questions
+  };
 
   const handleClick = (answer) => {
     if (selectAnswer === null) {
@@ -82,8 +87,9 @@ function QuizPage() {
   if (showResults) {
     return (
       <ResultPage
-        correctAnswers={correctAnswers}
         totalQuestions={totalQuestions}
+        correctAnswers={correctAnswers}
+        onPlayAgain={handlePlayAgain}
       />
     );
   }

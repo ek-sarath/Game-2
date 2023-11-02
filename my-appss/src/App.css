@@ -16,20 +16,32 @@ button {
 .multiple-choice-options {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
 }
 
-/* .option-button.correct {
-  background-color: green;
-  color: white;
-} */
-
-/* .option-button.incorrect {
-  background-color: red;
-  color: white;
-} */
 
 .next-button {
-  background-color: blue;
+  background-color: rgb(83, 83, 239);
   margin-top: 10px;
+}
+
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.answers button {
+  background-color: rgb(238, 196, 196);
+  border: 1px solid #0b0b0b;
+  padding: 10px;
+  margin: 5px;
+  width: 25%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.answers button:disabled {
+  cursor: not-allowed;
 }
