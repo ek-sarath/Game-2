@@ -19,10 +19,10 @@ button {
   gap: 10px;
 }
 
-.option-button.correct {
+/* .option-button.correct {
   background-color: green;
   color: white;
-}
+} */
 
 /* .option-button.incorrect {
   background-color: red;

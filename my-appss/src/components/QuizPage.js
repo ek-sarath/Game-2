@@ -19,7 +19,7 @@ function QuizPage() {
       fetchData();
       console.log("hi");
     }
-  }, []);
+  }, [quiz.length]);
 
   const fetchData = async () => {
     try {
@@ -38,14 +38,15 @@ function QuizPage() {
         ...currentQuestion.incorrect_answers,
         currentQuestion.correct_answer,
       ];
-      shuffleAndSetAnswers(answers);
-    }
-  }, [presentQuestionIndex, quiz, totalQuestions]);
 
   const shuffleAndSetAnswers = (answers) => {
     const shuffled = shuffle(answers);
     setShuffledAnswers(shuffled);
   };
+
+  shuffleAndSetAnswers(answers);
+  }
+}, [presentQuestionIndex, quiz, totalQuestions]);
 
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -91,7 +92,7 @@ function QuizPage() {
 
   return (
     <div className="quiz">
-      <h2>Question {presentQuestionIndex + 1}:</h2>
+      <h2>Question No : {presentQuestionIndex + 1}</h2>
       <p>{currentQuestion.question}</p>
       <div className="answers">
         {shuffledAnswers.map((answer, i) => (
