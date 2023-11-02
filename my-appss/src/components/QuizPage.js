@@ -56,7 +56,7 @@ function QuizPage() {
     setSelectAnswer(null);
     setPresentQuestionIndex(0);
     setShowResults(false);
-    fetchData();
+    fetchData(); 
   };
 
   const handleClick = (answer) => {
