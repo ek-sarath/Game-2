@@ -97,7 +97,7 @@ function QuizPage() {
   return (
     <div className="Quiz">
       <h2>Question No : {presentQuestionIndex + 1}</h2>
-      <p>{currentQuestion.question}</p>
+      <h3>{currentQuestion.question}</h3>
       <div className="Answer">
         {shuffledAnswers.map((answer, i) => (
           <button
@@ -107,7 +107,7 @@ function QuizPage() {
               backgroundColor:
                 selectAnswer === answer
                   ? answer === currentQuestion.correct_answer
-                    ? "lightgreen"
+                    ? "green"
                     : "red"
                   : "",
             }}
