@@ -43,7 +43,6 @@ function QuizPage() {
   }, [presentQuestionIndex, quiz, totalQuestions]);
 
   const shuffleAndSetAnswers = (answers) => {
-    // Shuffle the answers
     const shuffled = shuffle(answers);
     setShuffledAnswers(shuffled);
   };
