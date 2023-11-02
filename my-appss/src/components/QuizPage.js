@@ -97,10 +97,10 @@ function QuizPage() {
   const currentQuestion = quiz[presentQuestionIndex];
 
   return (
-    <div className="quiz">
+    <div className="Quiz">
       <h2>Question No : {presentQuestionIndex + 1}</h2>
       <p>{currentQuestion.question}</p>
-      <div className="answers">
+      <div className="Answer">
         {shuffledAnswers.map((answer, i) => (
           <button
             key={i}
