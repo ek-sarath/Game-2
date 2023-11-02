@@ -14,11 +14,6 @@ button {
   transition: background-color 0.3s;
 }
 
-.multiple-choice-options {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
 
 
 .next-button {

@@ -52,13 +52,11 @@ function QuizPage() {
   }
 
   const handlePlayAgain = () => {
-    // Reset the quiz state or navigate to the starting point
-    // You might want to reset the state and fetch new questions
     setCorrectAnswers(0);
     setSelectAnswer(null);
     setPresentQuestionIndex(0);
     setShowResults(false);
-    fetchData(); // Fetch new questions
+    fetchData();
   };
 
   const handleClick = (answer) => {
