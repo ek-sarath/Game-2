@@ -1,94 +1,121 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../App.css';
 import ResultPage from './ResultPage';
 
+const baseURL = "https://opentdb.com/api.php?amount=5&type=multiple";
+
 function QuizPage() {
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [quiz, setQuiz] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [showResult, setShowResult] = useState(false);
+  const [selectAnswer, setSelectAnswer] = useState(null);
+  const [presentQuestionIndex, setPresentQuestionIndex] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [shuffledAnswers, setShuffledAnswers] = useState([]);
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
-    fetchQuestions();
-    const setCorrectAnswers=0;
+    if (quiz.length === 0) {
+      fetchData();
+      console.log("hi");
+    }
   }, []);
 
-  const fetchQuestions = () => {
-    fetch('https://opentdb.com/api.php?amount=5&type=multiple')
-      .then((res) => res.json())
-      .then((data) => {
-        setQuestions(data.results);
-      })
-      .catch((error) => {
-        console.error('Error occurred:', error);
-      });
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(baseURL);
+      setQuiz(response.data.results);
+      setTotalQuestions(response.data.results.length);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
-  const moveToNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+  useEffect(() => {
+    if (presentQuestionIndex < totalQuestions) {
+      const currentQuestion = quiz[presentQuestionIndex];
+      const answers = [
+        ...currentQuestion.incorrect_answers,
+        currentQuestion.correct_answer,
+      ];
+      shuffleAndSetAnswers(answers);
+    }
+  }, [presentQuestionIndex, quiz, totalQuestions]);
+
+  const shuffleAndSetAnswers = (answers) => {
+    // Shuffle the answers
+    const shuffled = shuffle(answers);
+    setShuffledAnswers(shuffled);
+  };
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  const handleClick = (answer) => {
+    if (selectAnswer === null) {
+      setSelectAnswer(answer);
+
+      if (answer === quiz[presentQuestionIndex].correct_answer) {
+        setCorrectAnswers(correctAnswers + 1);
+      }
+    }
+  };
+
+  const handleNext = () => {
+    if (presentQuestionIndex === totalQuestions - 1) {
+      setShowResults(true);
     } else {
-      setShowResult(true);
+      setSelectAnswer(null);
+      setPresentQuestionIndex(presentQuestionIndex + 1);
     }
   };
 
-  const handleAnswerSelection = (selectedAnswer) => {
-    if (selectedAnswer === questions[currentQuestionIndex].correct_answer) {
-      setCorrectAnswers(correctAnswers + 1);
-    }
+  if (quiz.length === 0) {
+    return <div>Loading questions...</div>;
+  }
 
-    moveToNextQuestion();
-  };
-
-  const playAgain = () => {
-    setCurrentQuestionIndex(0);
-    setCorrectAnswers(0);
-    setShowResult(false);
-  };
-
-  if (showResult) {
+  if (showResults) {
     return (
       <ResultPage
-        totalQuestions={questions.length}
         correctAnswers={correctAnswers}
-        onPlayAgain={playAgain}
+        totalQuestions={totalQuestions}
       />
     );
   }
 
+  const currentQuestion = quiz[presentQuestionIndex];
 
   return (
-    <div className="QuizPage">
-      <h1>Quiz Page</h1>
-      <div>
-        {questions.length > 0 && (
-          <div>
-            <p>{questions[currentQuestionIndex].question}</p>
-            <div className="multiple-choice-options">
-              {questions[currentQuestionIndex].incorrect_answers.map((option, index) => (
-                <button
-                  key={index}
-                  className="option-button"
-                  onClick={() => handleAnswerSelection(option)}
-                >
-                  {option}
-                </button>
-              ))}
-              <button
-                className="option-button correct"
-                onClick={() =>
-                  handleAnswerSelection(questions[currentQuestionIndex].correct_answer)
-                }
-              >
-                {questions[currentQuestionIndex].correct_answer}
-              </button>
-            </div>
-          </div>
-        )}
-        <button onClick={moveToNextQuestion} className="next-button">
-          {currentQuestionIndex === questions.length - 1 ? 'See Result' : 'Next'}
-        </button>
+    <div className="quiz">
+      <h2>Question {presentQuestionIndex + 1}:</h2>
+      <p>{currentQuestion.question}</p>
+      <div className="answers">
+        {shuffledAnswers.map((answer, i) => (
+          <button
+            key={i}
+            onClick={() => handleClick(answer)}
+            style={{
+              backgroundColor:
+                selectAnswer === answer
+                  ? answer === currentQuestion.correct_answer
+                    ? "lightgreen"
+                    : "red"
+                  : "",
+            }}
+            disabled={selectAnswer !== null}
+          >
+            {answer}
+          </button>
+        ))}
       </div>
+      <button className="next-button" onClick={handleNext}>
+        {presentQuestionIndex === totalQuestions - 1 ? "See Results" : "Next"}
+      </button>
     </div>
   );
 }
